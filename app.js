@@ -1,3 +1,15 @@
-const express = require('express');
+const express = require("express");
 
 const app = express();
+const { vaidateUser } = require("./middlewares/validateUser.mw");
+const { createUser } = require("./controllers/user.controller");
+
+const PORT = 5000;
+
+app.listen(PORT, () => {
+  console.log(`server started on port: ${PORT}`);
+});
+
+const bodyParser = express.json();
+
+app.post("/users", bodyParser, vaidateUser, createUser);
