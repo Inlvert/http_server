@@ -1,14 +1,19 @@
-let users = [];
+const User = require("../models");
 
 const createUser = async (req, res) => {
-  const { user } = req;
+  const { user: userData } = req;
 
-  user.id = Date.now();
+  const user = await User.create(userData);
 
-  users.push(user);
-
-  console.log(users);
   res.send(user);
-}
+};
+
+const fintAll = async (req, res) => {
+  const users = await User.findAll();
+
+  res.send(users);
+};
 
 module.exports.createUser = createUser;
+
+module.exports.fintAll = fintAll;
