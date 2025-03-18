@@ -1,19 +1,64 @@
 const User = require("../models");
+const createHttpError = require('http-errors')
 
-const createUser = async (req, res) => {
-  const { user: userData } = req;
+module.exports.createUser = async (req, res, next) => {
+ try {
+  const { user: userData, body, file } = req;
 
-  const user = await User.create(userData);
+  const user = await User.create({...userData, imagePath: file.filename});
 
-  res.send(user);
+  res.send({body, file});
+ } catch (error) {
+  next(error)
+ }
 };
 
-const fintAll = async (req, res) => {
+module.exports.findAll = async (req, res) => {
   const users = await User.findAll();
 
   res.send(users);
 };
 
-module.exports.createUser = createUser;
+module.exports.getUser = async (req, res, next) => {
+  try {
+    const {
+      params: { userId },
+    } = req;
+  
+    const user = await User.findById(+userId);
 
-module.exports.fintAll = fintAll;
+    if(!user) {
+      const error = createHttpError(404, 'user was lost')
+      return  next(error)
+    }
+  
+    res.send(user);
+  } catch (error) {
+    next(error)
+  }
+};
+
+module.exports.deleteUser = async (req, res, next) => {
+  try {
+    const {
+      params: { userId },
+    } = req;
+  
+    const deleteUser = await User.deleteUserById(+userId);
+  
+    res.send(deleteUser);
+  } catch (error) {
+    next(error )
+  }
+};
+
+module.exports.updateUser = async (req, res, next) => {
+  const {
+    params: { userId },
+    body,
+  } = req;
+
+  const updateUser = await User.updateById(+userId, body);
+
+  res.send(updateUser);
+};

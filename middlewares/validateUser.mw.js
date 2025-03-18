@@ -3,6 +3,7 @@ const yup = require("yup");
 const USER_CREATION_SCHEMA = yup.object({
   name: yup.string().required(),
   email: yup.string().email().required(),
+  imagePath: yup.string(),
   // .matches(/^[a-zA-Z0-9@!#$&]{8,32}$/),
 });
 
@@ -13,8 +14,9 @@ const vaidateUser = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    res.send("Error invalid data");
+    next(error);
+    // res.send("Error invalid data");
   }
 };
 
-module.exports.vaidateUser = vaidateUser
+module.exports.vaidateUser = vaidateUser;

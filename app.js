@@ -1,17 +1,16 @@
 const express = require("express");
-
+const router = require("./routers");
+const { errorHendler } = require("./errors");
 const app = express();
-const { vaidateUser } = require("./middlewares/validateUser.mw");
-const { createUser, fintAll } = require("./controllers/user.controller");
+
+app.use(express.json());
+app.use(errorHendler)
+app.use(router);
+
+
 
 const PORT = 5000;
 
 app.listen(PORT, () => {
   console.log(`server started on port: ${PORT}`);
 });
-
-const bodyParser = express.json();
-
-app.post("/users", bodyParser, vaidateUser, createUser);
-
-app.get("/users", bodyParser, fintAll);
