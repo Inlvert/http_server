@@ -6,6 +6,7 @@ const app = express();
 app.use(express.json());
 app.use(errorHendler)
 app.use(router);
+app.use(express.static('public'))
 
 
 

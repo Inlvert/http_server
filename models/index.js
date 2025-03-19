@@ -15,7 +15,12 @@ class User {
   }
 
   static async create(userData) {
-    const userDBString = await fs.readFile(userDbPath, "utf-8");
+    // const userDBString = await fs.readFile(userDbPath, "utf-8");
+
+    const userDBString = await fs.readFile(userDbPath, {
+      encoding: "utf-8",
+      flag: "a+",
+    });
 
     const userDB = userDBString ? JSON.parse(userDBString) : [];
 
